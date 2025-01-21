@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block adminContent %}
+
+<div class="container mt-5">
+      <div class="col-lg-6">
+        <a href="{% url 'scanProductUrl'%}" class="btn btn-primary btn-block text-uppercase">Add Product</a>
+        </div>
+      <div class="row tm-content-row">
+        
+
+        <div class="col-sm-12 col-md-12 col-lg-12">
+
+          <div class="tm-block">
+            <div class="card">
+              <!-- Check if any messages exist -->
+              {% if messages %}
+                  <div class="alert alert-success">
+                      {% for message in messages %}
+                          <p>{{ message }}</p>
+                      {% endfor %}
+                  </div>
+              {% endif %}
+            
+            <div class="table-responsive">
+                <div class="container-fluid mx-auto">
+                    <div class="p-2 col-lg-12 col-md-12 col-sm-12">
+                        <table
+                            id="example"
+                            class="table table-striped text-start align-middle table-bordered table-hover mb-0 tm-bg-primary-dark"
+                            style="width: 100%"
+                        >
+                            <thead>
+                                <tr>
+                                    <th>Date Added</th>
+                                    <th>Product Name</th>
+                                    <th>Product Code</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Expiry Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products %}
+                                <tr class="mb-5">
+                                    <td>{{ product.created_at|date:"d M Y" }}</td>  <!-- Assuming you have a date_added field -->
+                                    <td>{{ product.product_name }}</td>
+                                    <td>{{ product.product_code }}</td>
+                                    <td>{{ product.price }}</td>
+                                    <td>{{ product.quantity }}</td>
+                                    <td>{{ product.expiry_date|date:"d M Y" }}</td> <!-- Format expiry date -->
+                                    <td class="d-flex">
+                                    <!-- <a href="" class="btn btn-sm me-1 btn-info text-light p-3">Edit</a> -->
+                                    <form method="post" action="{% url 'deleteProductUrl'%}" onsubmit="return confirm('Are you sure you want to delete this drug?');">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{ product.id }}" name="product_id">
+                                        <button type="submit" class="btn btn-sm btn-danger p-3">Delete</button>
+                                    </form>
+                                </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="7" class="text-center">No products available.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock adminContent %}

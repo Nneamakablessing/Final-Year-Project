@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block adminContent %}
+
+    <!-- row -->
+    <div class="row p-4">
+        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-taller text-light">
+                <h2 class="tm-block-title">Products Analysis</h2>
+                <div id="pieChartContainer">
+                    <div id="pieChart" class="text-light"></div>
+                </div>                        
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-overflow">
+                <h2 class="tm-block-title">Notification List</h2>
+                <div class="tm-notification-items">
+                    <h3 class="tm-text-color-secondary">Expired Products</h3>
+                    {% if expired_products %}
+                        {% for product in expired_products %}
+                        <div class="media tm-notification-item">
+                            <div class="media-body">
+                                <p class="mb-2"><b>{{ product.product_name }}</b> has expired on <b>{{ product.expiry_date }}</b>.</p>
+                                <span class="tm-small tm-text-color-secondary">{{ product.expiry_date }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-light">No expired products found.</p>
+                    {% endif %}
+                
+                    <h3 class="tm-text-color-secondary">Products Expiring Soon</h3>
+                    {% if expiring_soon_products %}
+                        {% for product in expiring_soon_products %}
+                        <div class="media tm-notification-item">
+                            <div class="media-body">
+                                <p class="mb-2"><b>{{ product.product_name }}</b> will expire on <b>{{ product.expiry_date }}</b>. Please take action.</p>
+                                <span class="tm-small tm-text-color-secondary">{{ product.expiry_date }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No products expiring soon.</p>
+                    {% endif %}
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+{% endblock adminContent %}
